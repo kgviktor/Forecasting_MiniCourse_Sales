@@ -1,5 +1,5 @@
 ## **Forecasting Mini-Course Sales**
----
+
 This project based on [Kaggle Competition](https://www.kaggle.com/competitions/playground-series-s3e19/overview)
 The goal of this competition is to forecast the sales of Kaggle courses offered in different countries.
 
@@ -13,6 +13,7 @@ To be done:
 3. Explore the approach of forecasting for each country separately
 
 ### Project Organization
+"""
 ├── data/
 │   ├── train.csv
 │   └── test.csv
@@ -31,5 +32,5 @@ To be done:
 ├── README.md
 ├── requirements.txt
 ├── setup.py
-
+"""
 
