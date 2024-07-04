@@ -15,4 +15,9 @@ setup(
         'lightgbm==4.4.0',
         'scikit-learn==1.5.0',
     ],
+    extras_require={
+        'dev': [
+            'pytest==8.2.2',
+        ],
+    },
 )
