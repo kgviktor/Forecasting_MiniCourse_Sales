@@ -1,20 +1,14 @@
-import sys
-import os
 import pytest
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
 from lightgbm import LGBMRegressor
-
-# Adding the src directory to sys.path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
 from data_processing import generate_features, split_data
 from modelling import iterative_forecasting, optimize_lgbm
 
 @pytest.fixture
 def synthetic_data():
-    """Creating synthetic data for tests."""
+    """Создание синтетических данных для тестов."""
     data = pd.DataFrame({
         'id': range(1, 101),
         'date': pd.date_range(start='2021-01-01', periods=100, freq='D'),
@@ -26,7 +20,7 @@ def synthetic_data():
     return data
 
 def test_generate_features(synthetic_data):
-    """Testing feature generation."""
+    """Тестирование генерации фичей."""
     df_features = generate_features(synthetic_data)
     assert 'year' in df_features.columns
     assert 'month' in df_features.columns
@@ -36,40 +30,37 @@ def test_generate_features(synthetic_data):
     assert 'product_P2' in df_features.columns or 'product_P3' in df_features.columns
 
 def test_split_data(synthetic_data):
-    """Testing data splitting function."""
+    """Тестирование функции разделения данных."""
     df_features = generate_features(synthetic_data)
     X_train, X_val, y_train, y_val, val_mask = split_data(df_features, validation_days=14)
-    
+
     assert X_train.shape[0] + X_val.shape[0] == df_features.shape[0]
     assert y_train.shape[0] + y_val.shape[0] == df_features.shape[0]
     assert not val_mask.isnull().any()
     assert set(X_train.columns) == set(X_val.columns)
 
 def test_iterative_forecasting(synthetic_data):
-    """Testing iterative forecasting function."""
+    """Тестирование функции итеративного прогнозирования."""
     df_features = generate_features(synthetic_data)
     X_train, X_val, y_train, y_val, val_mask = split_data(df_features, validation_days=14)
-    
+
     model = LGBMRegressor(random_state=42)
     df_forecast = iterative_forecasting(model, X_train, y_train, X_val, val_mask, df_features)
-    
+
     assert df_forecast.shape[0] == X_val.shape[0]
     assert 'forecast' in df_forecast.columns
     assert not df_forecast['forecast'].isnull().any()
 
 def test_optimize_lgbm(synthetic_data):
-    """Testing hyperparameter optimization function for LGBM."""
+    """Тестирование функции оптимизации гиперпараметров для LGBM."""
     df_features = generate_features(synthetic_data)
     X_train, X_val, y_train, y_val, val_mask = split_data(df_features, validation_days=14)
-    
+
     n_trials = 10
     model = optimize_lgbm(X_train, y_train, n_trials)
-    
+
     assert isinstance(model, LGBMRegressor)
-    
+
     model.fit(X_train, y_train)
     predictions = model.predict(X_val)
     assert len(predictions) == len(y_val)
-
-if __name__ == '__main__':
-    pytest.main()
