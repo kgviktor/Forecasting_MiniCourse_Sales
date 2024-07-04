@@ -14,8 +14,6 @@ To be done:
 
 ### Project Organization
 ```
-"""
->>>>>>> 777592a05aaf7b1a43235a38af39db9af86b6a59
 ├── data/
 │   ├── train.csv
 │   └── test.csv
