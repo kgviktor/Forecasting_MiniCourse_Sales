@@ -13,9 +13,7 @@ To be done:
 3. Explore the approach of forecasting for each country separately
 
 ### Project Organization
-<<<<<<< HEAD
 ```
-=======
 """
 >>>>>>> 777592a05aaf7b1a43235a38af39db9af86b6a59
 ├── data/
@@ -36,9 +34,6 @@ To be done:
 ├── README.md
 ├── requirements.txt
 ├── setup.py
-<<<<<<< HEAD
 ```
-=======
-"""
->>>>>>> 777592a05aaf7b1a43235a38af39db9af86b6a59
+
 
