@@ -1,8 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='Forecasting_MiniCourse_SalesForecasting_MiniCourse_Sales
-',
+    name='Forecasting_MiniCourse_SalesForecasting_MiniCourse_Sales',
     version='0.1',
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
