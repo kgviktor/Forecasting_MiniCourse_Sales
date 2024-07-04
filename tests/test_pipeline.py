@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from lightgbm import LGBMRegressor
 
-# Добавление директории src в sys.path
+# Adding the src directory to sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
 from data_processing import generate_features, split_data
@@ -14,7 +14,7 @@ from modelling import iterative_forecasting, optimize_lgbm
 
 @pytest.fixture
 def synthetic_data():
-    """Создание синтетических данных для тестов."""
+    """Creating synthetic data for tests."""
     data = pd.DataFrame({
         'id': range(1, 101),
         'date': pd.date_range(start='2021-01-01', periods=100, freq='D'),
@@ -26,7 +26,7 @@ def synthetic_data():
     return data
 
 def test_generate_features(synthetic_data):
-    """Тестирование генерации фичей."""
+    """Testing feature generation."""
     df_features = generate_features(synthetic_data)
     assert 'year' in df_features.columns
     assert 'month' in df_features.columns
@@ -36,7 +36,7 @@ def test_generate_features(synthetic_data):
     assert 'product_P2' in df_features.columns or 'product_P3' in df_features.columns
 
 def test_split_data(synthetic_data):
-    """Тестирование функции разделения данных."""
+    """Testing data splitting function."""
     df_features = generate_features(synthetic_data)
     X_train, X_val, y_train, y_val, val_mask = split_data(df_features, validation_days=14)
     
@@ -46,7 +46,7 @@ def test_split_data(synthetic_data):
     assert set(X_train.columns) == set(X_val.columns)
 
 def test_iterative_forecasting(synthetic_data):
-    """Тестирование функции итеративного прогнозирования."""
+    """Testing iterative forecasting function."""
     df_features = generate_features(synthetic_data)
     X_train, X_val, y_train, y_val, val_mask = split_data(df_features, validation_days=14)
     
@@ -58,7 +58,7 @@ def test_iterative_forecasting(synthetic_data):
     assert not df_forecast['forecast'].isnull().any()
 
 def test_optimize_lgbm(synthetic_data):
-    """Тестирование функции оптимизации гиперпараметров для LGBM."""
+    """Testing hyperparameter optimization function for LGBM."""
     df_features = generate_features(synthetic_data)
     X_train, X_val, y_train, y_val, val_mask = split_data(df_features, validation_days=14)
     
