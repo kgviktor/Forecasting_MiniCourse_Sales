@@ -40,7 +40,7 @@ def generate_features(df):
         df[f'lag_{lag}'] = df['num_sold'].shift(lag)
 
     # Fill NA values caused by lag features
-    df = df.fillna(method='bfill').fillna(method='ffill')
+    df = df.bfill().ffill()
 
     # One-hot encoding with dtype=np.int64 to ensure 0/1 instead of True/False
     df = pd.get_dummies(df, columns=['country', 'store', 'product'], drop_first=True, dtype=np.int64)
