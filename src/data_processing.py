@@ -1,6 +1,9 @@
 import numpy as np
 import pandas as pd
 
+import pandas as pd
+import numpy as np
+
 def generate_features(df):
     """
     Generate features from the given dataframe.
@@ -35,9 +38,15 @@ def generate_features(df):
     df['quarter'] = df['date'].dt.quarter
     df['is_weekend'] = (df['date'].dt.dayofweek >= 5).astype(np.int64)
 
-    # Creating lag features
-    for lag in range(1, 8):  # Creating 7 lag features
-        df[f'lag_{lag}'] = df['num_sold'].shift(lag)
+    # Creating lag features within each group
+    def create_lag_features(group):
+        for lag in range(1, 8):  # Creating 7 lag features
+            group[f'lag_{lag}'] = group['num_sold'].shift(lag)
+        return group
+
+    # Apply lag feature creation within each 'country', 'store', 'product' group
+    df = df.groupby(['country', 'store', 'product']).apply(create_lag_features)
+    # df = df.reset_index(drop=True)
 
     # Fill NA values caused by lag features
     df = df.bfill().ffill()
@@ -83,8 +92,8 @@ def split_data(df, validation_days=14):
     train_mask = df['date'] < validation_start_date
     val_mask = df['date'] >= validation_start_date
     
-    X_train = df[train_mask].drop(['id', 'date', 'num_sold'], axis=1)
-    X_val = df[val_mask].drop(['id', 'date', 'num_sold'], axis=1)
+    X_train = df[train_mask].drop(['id', 'num_sold'], axis=1)
+    X_val = df[val_mask].drop(['id', 'num_sold'], axis=1)
     y_train = df.loc[train_mask, 'num_sold']
     y_val = df.loc[val_mask, 'num_sold']
 
