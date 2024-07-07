@@ -41,5 +41,4 @@ To clone the repository and set up the project, follow these steps:
 ```sh
 git clone https://github.com/kgviktor/Forecasting_MiniCourse_Sales.git
 cd Forecasting_MiniCourse_Sales
-pip install -r requirements.txt
-
+pip install .
